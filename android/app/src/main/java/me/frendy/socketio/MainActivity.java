@@ -32,4 +32,10 @@ public class MainActivity extends AppCompatActivity implements SocketIOView, Vie
     public void showMessage(String message) {
         ((TextView) findViewById(R.id.tv_message)).setText(message);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSocketIOHelper.onDestroy();
+    }
 }

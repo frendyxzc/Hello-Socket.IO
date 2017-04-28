@@ -2,6 +2,9 @@ package me.frendy.socketio.presenters;
 
 import android.content.Context;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -30,9 +33,15 @@ public class SocketIOHelper {
             mSocket.connect();
 
             //3.对服务器发送一个"my event"事件，其值为"hi, i am android!"：
-            mSocket.emit("my event", "hi, i am android!");
+            try {
+                JSONObject data = new JSONObject();
+                data.put("data", "hi, i am android!");
+                mSocket.emit("my event", data);
 
-            mView.showMessage("hi, i am android!");
+                mView.showMessage(data.getString("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -40,8 +49,14 @@ public class SocketIOHelper {
 
     public void sendMessage(String event, String message) {
         if(mSocket != null) {
-            mSocket.emit(event, message);
-            mView.showMessage(message);
+            try {
+                JSONObject data = new JSONObject();
+                data.put("data", message);
+                mSocket.emit(event, data);
+                mView.showMessage(data.getString("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
