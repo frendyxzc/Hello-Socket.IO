@@ -4,4 +4,33 @@
     socket.on('connect', function() {
         socket.emit('my event', {data: 'I\'m connected!'});
     });
+	
+	function push() {
+		var message = document.getElementsByTagName('input')[0].value;
+		socket.emit('broadcast', {'data': message});
+		alert("Send Broadcast!");
+	}
+	
+	function pushP2P() {
+		var androidId = document.getElementsByTagName('input')[1].value;
+		var message = document.getElementsByTagName('input')[2].value;
+		var data = {'id': androidId, 'data': message};
+		socket.emit('p2p', data);
+		alert("Send P2P Message!");
+	}
 </script>
+
+<body>
+	<button type="button" onclick="push()"> Click to Push Broadcast</button>
+	
+	<input id='input' name='input' value='***** Test Broadcast' />
+	
+	<br>
+	<br>
+	
+	<button type="button" onclick="pushP2P()"> Click to Push P2P Message</button>
+	
+	<!-- b45d8c622cc38bb1 请输入 Android ID-->
+	<input id='input2' name='input2' value='请输入 Android ID' />
+	<input id='input3' name='input3' value='***** Test P2P Message' />
+</body>
