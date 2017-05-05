@@ -1,10 +1,11 @@
-package me.frendy.socketio;
+package me.frendy.socketio.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import me.frendy.socketio.R;
 import me.frendy.socketio.presenters.SocketIOHelper;
 import me.frendy.socketio.presenters.interfaces.SocketIOView;
 
