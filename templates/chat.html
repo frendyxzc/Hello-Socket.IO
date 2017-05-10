@@ -5,7 +5,7 @@
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
         <script type="text/javascript" charset="utf-8">
             var socket;
-			var uuid = get_uuid();
+            var uuid = get_uuid();
             $(document).ready(function(){
                 socket = io.connect('http://' + document.domain + ':' + location.port);
                 socket.on('connect', function() {
@@ -44,12 +44,12 @@
                 });
             }
 			
-			function get_uuid() {
-				function S4() {
-				   return (((1+Math.random())*0x10000)|0).toString(8).substring(1);
+            function get_uuid() {
+                function S4() {
+                    return (((1+Math.random())*0x10000)|0).toString(8).substring(1);
 				}
-				return ("PC-"+S4()+"-"+S4()+S4());
-			}
+                return ("PC-"+S4()+"-"+S4()+S4());
+            }
         </script>
     </head>
     <body>
