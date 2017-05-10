@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <title>Flask-SocketIO-Chat: 100</title>
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            var socket;
+			var uuid = get_uuid();
+            $(document).ready(function(){
+                socket = io.connect('http://' + document.domain + ':' + location.port);
+                socket.on('connect', function() {
+                    socket.emit('joined', {name : uuid, room : '100'});
+                });
+                socket.on('_joined', function(data) {
+                    $('#chat').val($('#chat').val() + '<' + data.user_name + ' joined>\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                socket.on('_left', function(data) {
+                    $('#chat').val($('#chat').val() + '<' + data.user_name + ' left>\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                socket.on('_message', function(data) {
+                    $('#chat').val($('#chat').val() + data.user_name + ' : ' + data.message + '\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                $('#text').keypress(function(e) {
+                    var code = e.keyCode || e.which;
+                    if (code == 13) {
+                        text = $('#text').val();
+                        $('#text').val('');
+                        socket.emit('message', {message: text});
+
+                        $('#chat').val($('#chat').val() + uuid + ' : ' + text + '\n');
+                        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                    }
+                });
+            });
+            function leave_room() {
+                socket.emit('left', {}, function() {
+                    socket.disconnect();
+
+                    // go back to the login page
+                    window.location.href = "{{ url_for('index') }}";
+                });
+            }
+			
+			function get_uuid() {
+				function S4() {
+				   return (((1+Math.random())*0x10000)|0).toString(8).substring(1);
+				}
+				return ("PC-"+S4()+"-"+S4()+S4());
+			}
+        </script>
+    </head>
+    <body>
+        <h1>Flask-SocketIO-Chat: 100</h1>
+        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
+        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+        <a href="#" onclick="leave_room();">Leave this room</a>
+    </body>
+</html>

@@ -18,6 +18,10 @@
 		socket.emit('p2p', data);
 		alert("Send P2P Message!");
 	}
+	
+	function enter_room() {
+		window.location.href = "{{ url_for('chat') }}";
+	}
 </script>
 
 <body>
@@ -33,4 +37,8 @@
 	<!-- b45d8c622cc38bb1 请输入 Android ID-->
 	<input id='input2' name='input2' value='请输入 Android ID' />
 	<input id='input3' name='input3' value='***** Test P2P Message' />
+	
+	<br>
+	<br>
+	<button type="button" onclick="enter_room()"> Enter Chat Room</button>
 </body>

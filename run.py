@@ -33,6 +33,10 @@ def do_p2p_message(message):
 
 GLOBAL_NUM_USERS = 0
 
+@app.route('/chat')
+def chat():
+	return render_template('chat.html')
+
 @socketio.on('joined')
 def joined(message):
 	"""Sent by clients when they enter a room.
@@ -44,7 +48,7 @@ def joined(message):
 	session['room'] = message['room']
 	room = session.get('room')
 	join_room(room)
-	print(session)
+	print('%s : joined' % session)
 	emit('_joined', {'user_name': session.get('name'), 'num_users' : GLOBAL_NUM_USERS}, room=room)
 
 @socketio.on('message')
@@ -52,7 +56,7 @@ def message(message):
 	"""Sent by a client when the user entered a new message.
 	The _message is sent to all people in the room."""
 	room = session.get('room')
-	print(session)
+	print('%s : message : %s' % (session, message['message']))
 	emit('_message', {'user_name': session.get('name'), 'message' : message['message']}, room=room, include_self=False)
 
 @socketio.on('left')
@@ -63,7 +67,7 @@ def left(message):
 	GLOBAL_NUM_USERS = GLOBAL_NUM_USERS - 1
 	room = session.get('room')
 	leave_room(room)
-	print(session)
+	print('%s : left' % session)
 	emit('_left', {'user_name': session.get('name'), 'num_users' : GLOBAL_NUM_USERS}, room=room)
 
 if __name__ == '__main__':
